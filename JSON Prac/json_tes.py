@@ -78,25 +78,54 @@ def delete_data():
 
 
 def search_data():
+    filename = "name_data.json"
+
+
+    if os.path.exists(filename):
+        with open(filename, "r") as r:
+            all_data = json.load(r)
+    else:
+        all_data = []
+    
+    user_input = input("Input first name : ")
+
+    found = False
+    for item in all_data:
+        if item["first_name"] == user_input:
+            print(item)
+            found = True
+        
+    if not found:
+        print("Data Not Found")
+        
+
+
+
+def update_data():
+    pass
+
+def menu():
     pass
 
 
-while True:
+# while True:
     
-    v = gather()
-    save_data(v)
+#     v = gather()
+#     save_data(v)
 
-    user_input = input("Do You Want to proceed? Y/N ").lower()
+#     user_input = input("Do You Want to proceed? Y/N ").lower()
 
-    if user_input == "y":
-        continue
-    elif user_input == "n":
-        break
-    else:
-        print("Please input correctly")
+#     if user_input == "y":
+#         continue
+#     elif user_input == "n":
+#         break
+#     else:
+#         print("Please input correctly")
         
     
 
-print("Quitted from the system")
+# print("Quitted from the system")
 
 show_data()
+
+search_data()
