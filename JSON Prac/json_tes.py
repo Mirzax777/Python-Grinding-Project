@@ -108,19 +108,19 @@ def menu():
     pass
 
 
-# while True:
+while True:
     
-#     v = gather()
-#     save_data(v)
+    v = gather()
+    save_data(v)
 
-#     user_input = input("Do You Want to proceed? Y/N ").lower()
+    user_input = input("Do You Want to proceed? Y/N ").lower()
 
-#     if user_input == "y":
-#         continue
-#     elif user_input == "n":
-#         break
-#     else:
-#         print("Please input correctly")
+    if user_input == "y":
+        continue
+    elif user_input == "n":
+        break
+    else:
+        print("Please input correctly")
         
     
 
