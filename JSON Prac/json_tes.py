@@ -149,6 +149,23 @@ def menu():
             print("Please Input Available Option.")
 
 
+<<<<<<< HEAD
+=======
+while True:
+    
+    v = gather()
+    save_data(v)
+
+    user_input = input("Do You Want to proceed? Y/N ").lower()
+
+    if user_input == "y":
+        continue
+    elif user_input == "n":
+        break
+    else:
+        print("Please input correctly")
+        
+>>>>>>> a1f922dcb93672dfed20c767ee6e394d28640525
     
 
 
