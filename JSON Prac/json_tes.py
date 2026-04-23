@@ -2,7 +2,30 @@ import json
 import os
 
 def gather():
+    filename = "name_data.json"
+
+    if os.path.exists(filename):
+        with open(filename, "r") as f:
+            all_data = json.load(f)
+    else:
+        all_data = []
+
+    pattern = "A"
+    
+    max_number = 0
+    for item in all_data:
+        id_data = item["id"]
+        id_number = int(id_data[1:])
+        
+        if id_number > max_number:
+            max_number = id_number
+
+    next_number = max_number + 1     
+    custom_id =  f"{pattern}{next_number}"
+
+
     data = {
+        "id" : custom_id,
         "first_name" : input("First Name : "),
         "last_name" : input("Last Name : ")
     }
@@ -34,11 +57,13 @@ def show_data():
         all_data = []
 
     for i, item in enumerate(all_data):
-        print(f'{i + 1}. User Fisrt Name : {item["first name"]}, User Last Name : {item["last name"]}')
+        print(f'{i + 1}. User Fisrt Name : {item["first_name"]}, User Last Name : {item["last_name"]}')
 
 
 def delete_data():
     filename = "name_data.json"
+
+    n = int(input("Enter number to delete: "))
 
     if os.path.exists(filename):
         with open(filename, "r") as r:
@@ -46,10 +71,14 @@ def delete_data():
     else:
         all_data = []
 
-    all_data.pop(0)
+    all_data.pop(n-1)
 
     with open(filename, "w") as j:
         json.dump(all_data, j, indent=4)
+
+
+def search_data():
+    pass
 
 
 while True:
