@@ -1,14 +1,19 @@
 import json
 import os
 
+FILENAME = "name_data.json"
+
+
 def load_data():
-    filename = "name_data.json"
-    if os.path.exists(filename):
-        with open(filename, "r") as f:
-            all_data = json.load(f)
-    else:
-        all_data = []
-    return all_data
+    if os.path.exists(FILENAME):
+        with open(FILENAME, "r") as f:
+            return json.load(f)
+    return []
+
+
+def save_all_data(all_data):
+    with open(FILENAME, "w") as j:
+        json.dump(all_data, j, indent=4)
 
 
 def gather():
@@ -17,18 +22,16 @@ def gather():
     
     max_number = 0
     for item in all_data:
-        id_data = item["id"]
-        id_number = int(id_data[1:])      
+        id_number = int(item["id"][1:])
         if id_number > max_number:
             max_number = id_number
 
-    next_number = max_number + 1     
-    custom_id =  f"{pattern}{next_number}"
+    custom_id = f"{pattern}{max_number + 1}"
 
     data = {
-        "id" : custom_id,
-        "first_name" : input("First Name : "),
-        "last_name" : input("Last Name : ")
+        "id": custom_id,
+        "first_name": input("First Name : "),
+        "last_name": input("Last Name : ")
     }
     return data
     
@@ -39,40 +42,60 @@ def save_data(data):
     save_all_data(all_data)
 
 
-def save_all_data(all_data):
-    filename = "name_data.json"
-
-    with open(filename, "w") as j:
-        json.dump(all_data, j, indent=4)
-
-
-
 def show_data():
     all_data = load_data()
 
+    if not all_data:
+        print("No data available.")
+        return
+
+    print("\n--- User List ---")
     for i, item in enumerate(all_data):
-        print(f'{i + 1}. User Fisrt Name : {item["first_name"]}, User Last Name : {item["last_name"]}')
+        print(f'{i + 1}. [{item["id"]}] {item["first_name"]} {item["last_name"]}')
 
 
 def delete_data():
     all_data = load_data()
-    n = int(input("Enter number to delete: "))
-    all_data.pop(n-1)
+
+    if not all_data:
+        print("No data available.")
+        return
+
+    show_data()
+
+    user_input = input("Enter number to delete: ")
+
+    try:
+        n = int(user_input) - 1
+
+        if n < 0 or n >= len(all_data):
+            print("Invalid selection")
+            return
+
+    except ValueError:
+        print("Please enter a valid number")
+        return
+
+    all_data.pop(n)
     save_all_data(all_data)
+    print("Data deleted successfully.")
 
 
 def search_data():
     all_data = load_data()
-    user_input = input("Input first name : ")
+    user_input = input("Input first name : ").lower()
 
     found = False
+    print("\n--- Search Result ---")
+
     for item in all_data:
-        if item["first_name"] == user_input:
-            print(item)
+        if user_input in item["first_name"].lower():
+            print(f'[{item["id"]}] {item["first_name"]} {item["last_name"]}')
             found = True        
+
     if not found:
         print("Data Not Found")
-        
+
 
 def update_data():
     all_data = load_data()
@@ -90,7 +113,7 @@ def update_data():
 
         if n < 0 or n >= len(all_data):
             print("Invalid selection")
-            return
+            return 
 
     except ValueError:
         print("Please enter a valid number")
@@ -108,7 +131,7 @@ def update_data():
         item["last_name"] = new_last
 
     save_all_data(all_data)
-        
+    print("Data updated successfully.")
 
 
 def show_menu():
@@ -119,7 +142,8 @@ def show_menu():
     print("2. Show Data")
     print("3. Delete Data")
     print("4. Search Data")
-    print("5. Exit")
+    print("5. Update Data")
+    print("6. Exit")
     print("="*30)
 
 
@@ -131,6 +155,7 @@ def menu():
         if user_input == "1":
             data = gather()
             save_data(data)
+            print("Data added successfully.")
 
         elif user_input == "2":
             show_data()
@@ -142,30 +167,17 @@ def menu():
             search_data()
 
         elif user_input == "5":
+            update_data()
+
+        elif user_input == "6":
             print("You're Out")
             break
 
         else:
             print("Please Input Available Option.")
 
-
-<<<<<<< HEAD
-=======
-while True:
-    
-    v = gather()
-    save_data(v)
-
-    user_input = input("Do You Want to proceed? Y/N ").lower()
-
-    if user_input == "y":
-        continue
-    elif user_input == "n":
-        break
-    else:
-        print("Please input correctly")
-        
->>>>>>> a1f922dcb93672dfed20c767ee6e394d28640525
-    
+        input("\nPress Enter to continue...")
 
 
+# Run program
+menu()
